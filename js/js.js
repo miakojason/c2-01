@@ -40,7 +40,7 @@ function clean() {
 }
 function reg() {
 	let user = {
-		acc: $("#acc").avl(),
+		acc: $("#acc").val(),
 		pw: $("#pw").val(),
 		pw2: $("#pw2").val(),
 		email: $("#email").val()
@@ -49,14 +49,14 @@ function reg() {
 		if (user.pw == user.pw2) {
 			$.post("./api/chk_acc.php", { acc: user.acc }, (res) => {
 				if (parseInt(res) == 1) {
-					alert("帳號重複")
+					alert("帳號重覆")
 				} else {
 					$.post('./api/reg.php', user, (res) => {
 						alert('註冊完成,歡迎加入')
 					})
 				}
 			})
-		}else{
+		} else {
 			alert("密碼錯誤")
 		}
 	} else {
