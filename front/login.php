@@ -11,8 +11,8 @@
         </tr>
         <tr>
             <td>
-                <input type="submit" value="登入">
-                <input type="reset" value="清除">
+                <input type="submit" value="登入" onclick="login()">
+                <input type="reset" value="清除" onclick="clean()">
             </td>
             <td>
                 <a href="?do=forget">忘記密碼</a>
