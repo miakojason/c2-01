@@ -1,4 +1,4 @@
-<form action="./api/edit.news.php" method="post">
+<form action="./api/edit_news.php" method="post">
     <table>
         <tr>
             <td>編號</td>
@@ -11,7 +11,7 @@
         $div = 3;
         $pages = ceil($total / $div);
         $now = $_GET['p'] ?? 1;
-        $start = ($now - 1) * $now;
+        $start = ($now - 1) * $div;
         $rows = $News->all(" limit $start,$div");
         foreach ($rows as $idx => $row) {
         ?>
@@ -19,7 +19,7 @@
             <tr>
                 <td><?= $idx + 1 + $start; ?></td>
                 <td><?= $row['title']; ?></td>
-                <td><input type="checkbox" name="sh[]" value="<?= $row['id']; ?>" <?=($row['sh']==1)?'checked':'';?>></td>
+                <td><input type="checkbox" name="sh[]" value="<?= $row['id']; ?>" <?= ($row['sh'] == 1) ? 'checked' : ''; ?>></td>
                 <td>
                     <input type="hidden" name="id[]" value="<?= $row['id']; ?>">
                     <input type="checkbox" name="del[]" value="<?= $row['id']; ?>">
