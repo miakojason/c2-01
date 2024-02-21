@@ -1,35 +1,38 @@
 <fieldset>
-    <legend>目前位置:首頁>最新文章區</legend>
+    <legend>目前位置:首頁>人氣文章區</legend>
     <table>
         <tr>
-            <th>標題</th>
-            <th>內容</th>
-            <th></th>
+            <th style="width: 30%;">標題</th>
+            <th style="width: 50%;">內容</th>
+            <th>人氣</th>
         </tr>
         <?php
-        $total = $News->count();
+        $total = $News->count(['sh' => 1]);
         $div = 5;
         $pages = ceil($total / $div);
         $now = $_GET['p'] ?? 1;
         $start = ($now - 1) * $div;
-        $rows = $News->all(['sh' => 1], " limit $start,$div");
+        $rows = $News->all(['sh' => 1], " order by `good` desc limit $start,$div");
         foreach ($rows as $row) {
         ?>
             <tr>
                 <td>
-                    <div class="title" data-id="<?= $row['id']; ?>" style="cursor: pointer;">
+                    <div class="title clo" data-id="<?= $row['id']; ?>" style="cursor:pointer">
                         <?= $row['title']; ?>
                     </div>
                 </td>
                 <td>
-                    <div id="s<?= $row['id']; ?>">
-                        <?= mb_substr($row['text'], 0, 25); ?>...
+                    <div>
+                        <?= mb_substr($row['news'], 0, 25); ?>...
                     </div>
-                    <div id="a<?= $row['id']; ?>" style="display: none;">
-                        <?= $row['text']; ?>
+                    <div id="p<?= $row['id']; ?>" class="pop">
+                        <h3 style="color: skyblue;"><?= $row['title']; ?></h3>
+                        <pre><?= $row['news']; ?></pre>
                     </div>
                 </td>
                 <td>
+                    <span><?= $row['good']; ?></span>個人說
+                    <img src="./icon/02B03.jpg" style="width:25px">
                     <?php
                     if (isset($_SESSION['user'])) {
                         if ($Log->count(['news' => $row['id'], 'acc' => $_SESSION['user']]) > 0) {
@@ -53,7 +56,7 @@
         }
         for ($i = 1; $i <= $pages; $i++) {
             $fontsize = ($now == $i) ? '24px' : '16px';
-            echo "<a href='?do=$do&p=$i'style='font-size:$fontsize'>$i</a>";
+            echo "<a href='?do=$do&p=$i' style='font-size:$fontsize'>$i</a>";
         }
         if ($now < $pages) {
             $next = $now + 1;
@@ -63,9 +66,10 @@
     </div>
 </fieldset>
 <script>
-    $(".title").on('click', (e) => {
-        let id = $(e.target).data('id');
-        $(`#s${id},#a${id}`).toggle();
+    $(".title").hover(function() {
+        $(".pop").hide()
+        let id = $(this).data("id")
+        $("#p" + id).show();
     })
 
     function good(news) {
