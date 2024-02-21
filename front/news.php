@@ -45,6 +45,7 @@
         }
         ?>
     </table>
+    <div>
     <?php
     if ($now > 1) {
         $prev = $now - 1;
@@ -59,6 +60,7 @@
         echo "<a href='?do=$do&p=$next'>></a>";
     }
     ?>
+    </div>
 </fieldset>
 <script>
     $(".title").on('click', (e) => {
